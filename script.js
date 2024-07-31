@@ -1,81 +1,104 @@
-document.addEventListener('DOMContentLoaded', () => {
+const frutasNome = [
+    {name: "Rainha", img: "images/rainha.png"},
+    {name: "Pen", img: "images/pen.png"},
+    {name: "Kitty", img: "images/kitty.png"},
+    {name: "Duquesa", img: "images/duquesa.png"},
+    {name: "Lady", img: "images/lady.png"},
+    {name: "Anthony", img: "images/anthony.png"},
+    {name: "Eloise", img: "images/eloise.png"},
+    {name: "Laranja", img: "images/laranja.png"},
+    {name: "Manga", img: "images/manga.png"},
+    {name: "Pera", img: "images/pera.png"}
+];
+
+let cartas = frutasNome.concat(frutasNome); // Duplicar a lista para criar pares
+let hasFlippedCard = false;
+let firstCard, secondCard;
+let lockBoard = false;
+
+// Função para embaralhar as cartas
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Função para criar o tabuleiro do jogo
+function createBoard() {
     const gameBoard = document.getElementById('gameBoard');
-
-    // Lista de imagens (insira os caminhos das suas imagens aqui)
-    const images = [
-        'fotos/ img1.jpg', 'fotos/ img2.jpg', 'fotos/img3.jpeg', 'fotos/img4.jpg', 
-        'img5.jpg', 'img6.jpg', 'img7.jpg', 'img8.jpg'
-    ];
-
-    // Duplicar as imagens para criar pares e embaralhar
-    const cardsArray = [...images, ...images];
-    cardsArray.sort(() => 0.5 - Math.random());
-
-    // Criar os cartões
-    cardsArray.forEach(image => {
+    gameBoard.innerHTML = '';
+    shuffle(cartas);
+    for (let i = 0; i < cartas.length; i++) {
         const card = document.createElement('div');
         card.classList.add('card');
-        card.innerHTML = `
-            <div class="card-inner">
-                <div class="card-front"></div>
-                <div class="card-back">
-                    <img src="${image}" alt="Imagem">
-                </div>
-            </div>
-        `;
+        card.dataset.name = cartas[i].name;
+
+        const cardInner = document.createElement('div');
+        cardInner.classList.add('card-inner');
+        card.appendChild(cardInner);
+
+        const cardFront = document.createElement('div');
+        cardFront.classList.add('card-front');
+        cardInner.appendChild(cardFront);
+
+        const cardBack = document.createElement('div');
+        cardBack.classList.add('card-back');
+        const img = document.createElement('img');
+        img.src = cartas[i].img;
+        cardBack.appendChild(img);
+        cardInner.appendChild(cardBack);
+
+        card.addEventListener('click', flipCard);
         gameBoard.appendChild(card);
-    });
+    }
+}
 
-    let hasFlippedCard = false;
-    let firstCard, secondCard;
-    let lockBoard = false;
+// Função para virar a carta
+function flipCard() {
+    if (lockBoard) return;
+    if (this === firstCard) return;
 
-    function flipCard() {
-        if (lockBoard) return;
-        if (this === firstCard) return;
+    this.classList.add('flipped');
 
-        this.classList.add('flip');
-
-        if (!hasFlippedCard) {
-            // Primeiro clique
-            hasFlippedCard = true;
-            firstCard = this;
-            return;
-        }
-
-        // Segundo clique
-        secondCard = this;
-        checkForMatch();
+    if (!hasFlippedCard) {
+        hasFlippedCard = true;
+        firstCard = this;
+        return;
     }
 
-    function checkForMatch() {
-        let isMatch = firstCard.querySelector('.card-back img').src === secondCard.querySelector('.card-back img').src;
+    secondCard = this;
+    checkForMatch();
+}
 
-        isMatch ? disableCards() : unflipCards();
-    }
+// Função para verificar se as cartas viradas formam um par
+function checkForMatch() {
+    let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+    isMatch ? disableCards() : unflipCards();
+}
 
-    function disableCards() {
-        firstCard.removeEventListener('click', flipCard);
-        secondCard.removeEventListener('click', flipCard);
+// Função para desativar as cartas (quando formam um par)
+function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+    resetCards();
+}
 
-        resetBoard();
-    }
+// Função para desvirar as cartas (quando não formam um par)
+function unflipCards() {
+    lockBoard = true;
+    setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        resetCards();
+    }, 1000);
+}
 
-    function unflipCards() {
-        lockBoard = true;
+// Função para resetar o estado das cartas viradas
+function resetCards() {
+    [hasFlippedCard, lockBoard] = [false, false];
+    [firstCard, secondCard] = [null, null];
+}
 
-        setTimeout(() => {
-            firstCard.classList.remove('flip');
-            secondCard.classList.remove('flip');
-
-            resetBoard();
-        }, 1500);
-    }
-
-    function resetBoard() {
-        [hasFlippedCard, lockBoard] = [false, false];
-        [firstCard, secondCard] = [null, null];
-    }
-
-    document.querySelectorAll('.card').forEach(card => card.addEventListener('click', flipCard));
-});
+document.addEventListener('DOMContentLoaded', createBoard);
