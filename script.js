@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 const frutasNome = [
     {name: "Rainha", img: "images/rainha.png"},
     {name: "Pen", img: "images/pen.png"},
@@ -104,4 +103,4 @@ function resetCards() {
 }
 
 document.addEventListener('DOMContentLoaded', createBoard);
->>>>>>> fae8553465c94ea459bc633b19e47fa300459a6c
+
