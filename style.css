@@ -10,15 +10,16 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #86b3ee;
-  color: #FFFFFF;
+  color: #ffffff95;
   font-family: Georgia;
+  justify-content: center;
 }
 
 .containerP {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #fdfbfb;
   padding: 20px;
   width: 900px;
   height: 700px;
