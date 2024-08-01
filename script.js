@@ -7,9 +7,9 @@ const frutasNome = [
     {name: "Lady", img: "images/lady.png"},
     {name: "Anthony", img: "images/anthony.png"},
     {name: "Eloise", img: "images/eloise.png"},
-    {name: "Laranja", img: "images/laranja.png"},
-    {name: "Manga", img: "images/manga.png"},
-    {name: "Pera", img: "images/pera.png"}
+    {name: "Gregory", img: "images/gregory.png"},
+    {name: "Colin", img: "images/colin.png"},
+    {name: "fran", img: "images/fran.png"}
 ];
 
 let cartas = frutasNome.concat(frutasNome); // Duplicar a lista para criar pares
