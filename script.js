@@ -1,5 +1,5 @@
 
-const frutasNome = [
+const bridgerton= [
     {name: "Rainha", img: "images/rainha.png"},
     {name: "Pen", img: "images/pen.png"},
     {name: "Kitty", img: "images/kitty.png"},
@@ -12,7 +12,7 @@ const frutasNome = [
     {name: "fran", img: "images/fran.png"}
 ];
 
-let cartas = frutasNome.concat(frutasNome); // Duplicar a lista para criar pares
+let cartas = bridgerton.concat(bridgerton); // Duplicar as imagens para criar pares
 let hasFlippedCard = false;
 let firstCard, secondCard;
 let lockBoard = false;
